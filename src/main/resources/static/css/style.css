@@ -1,1 +1,10 @@
 @charset "UTF-8";
+
+#wrap{
+	width:1200px;
+	margin:auto;
+}
+.section{
+	
+	margin:auto;
+}
