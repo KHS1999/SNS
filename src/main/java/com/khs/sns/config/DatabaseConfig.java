@@ -11,7 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @Configuration
-@MapperScan(basePackages="com.khs.memo.*")
+@MapperScan(basePackages="com.khs.sns.*")
 public class DatabaseConfig {
 	
 	@Bean
