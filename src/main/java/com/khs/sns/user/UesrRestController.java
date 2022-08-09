@@ -76,6 +76,7 @@ public class UesrRestController {
 			// user id, user loginId
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userloginId", user.getLoginId());
+			
 			}else{ // 로그인 실패
 				result.put("result","fail");
 		}

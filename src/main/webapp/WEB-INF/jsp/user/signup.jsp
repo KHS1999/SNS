@@ -40,6 +40,8 @@
 					<input type="text" placeholder="아이디"  id= "idInput" class="form-control col-9 mt-3">
 					<button class="btn bg-primary text-white mt-3 ml-1 form-control"  id="isDuplicateBtn">중복확인</button>
 				</div>
+				<div id="duplicateText" class="d-none"><span class="small text-danger">중복된 ID 입니다.</span></div>
+				<div id="possibleText" class="d-none"><span class="small text-success">사용가능한 ID 입니다.</span></div>
 				<input type="password" placeholder="패스워드" id="passwordInput" class="form-control mt-3">
 				<input type="password" placeholder="패스워드확인" id="checkpasswordInput" class="form-control mt-3">
 				<input type="text" placeholder="이름" id="nameInput" class="form-control mt-3">
@@ -54,6 +56,19 @@
 	</div>
 	<script>
 		$(document).ready(function(){
+			
+			var isDuplicateCheck = false;
+			var isDuplicateId = true;
+			
+			$("#idInput").on("input",function() {
+				 isDuplicateCheck = false;
+				 isDuplicateId = true;		
+				$("#possibleText").addClass("d-none");
+				$("#duplicateText").addClass("d-none");
+			});	
+			
+		
+			
 			$("#isDuplicateBtn").on("click",function(){
 				let id = $("#idInput").val();
 				
@@ -61,17 +76,25 @@
 					alert("아이디를 입력해주세요!");
 					return ;
 				}	
+				
 				$.ajax({
 					type:"get",
 					url:"/user/duplicate_id",
-					data:{"loginId":loginId},
+					data:{"loginId":id},
 					success:function(data){
 						// {"is_duplicate" : "true"}
 						// {"is_duplicate" : "false"}
+						// 중복체크 여부 판단
+						 isDuplicateCheck = true;
+						
 						if(data.is_duplicate){ // 중복된 경우
-							alert("중복되었습니다.");
+							$("#duplicateText").removeClass("d-none");
+							$("#possibleText").addClass("d-none");
+							isDuplicateId = true;
 						}else{ // 중복되지 않은 경우
-							alert("사용가능합니다!");
+							$("#possibleText").removeClass("d-none");	
+							$("#duplicateText").addClass("d-none");
+							isDuplicateId = false;
 						}
 					},
 					error:function(){
@@ -90,6 +113,20 @@
 				
 				if(id == ""){
 					alert("아이디를 입력해주세요!");
+					return ;
+				}
+				
+				// 중복체크 여부 유효성 검사
+				//if(isDuplicateCheck == false){
+				if(!isDuplicateCheck){
+					alert("중복여부 체크를 진행해주세요");
+					return;
+				}
+				
+				// 아이디 중복여부 유효성 검사
+				//if(isDuplicateId == true){
+				if(isDuplicateId){	
+					alert("중복된 아이디입니다");
 					return ;
 				}
 				

@@ -30,8 +30,8 @@
 		<section  class="section  d-flex justify-content-center py-5">
 			<div class= "col-4 text-center pt-5 sectionDiv">
 				<h1>Stargram</h1>								
-				<input type="text" placeholder="아이디" class="form-control mt-3">
-				<input type="password" placeholder="비밀번호" class="form-control mt-3">								
+				<input type="text" id="loginIdinput"placeholder="아이디" class="form-control mt-3">
+				<input type="password" id="passwordInput"placeholder="비밀번호" class="form-control mt-3">								
 				<button class="btn bg-primary text-white mt-3 form-control">로그인</button>
 				<div class="sectionDiv my-3 text-center">
 				    <br>계정이 없으신가요?<a href="/user/signup/view">가입하기</a><br><br>
@@ -43,9 +43,42 @@
 	</div>
 	<script>
 		$(document).ready(function(){
-			$("#loginForm").on("submit",function(){
+			$("#loginForm").on("submit",function(e){
+				// 해당 이벤트가 가지고  있는 기능을 비활성화
 				e.preventDefault();
 				
+				// loginId 와 password 를 통해서 로그인 진행
+				// 로그인 api 호출
+				let loginId = $("#loginIdinput").val();
+				let password = $("#passwordInput").val();
+				
+				if(loginId == ""){
+					
+					alert("아이디를 입력하세요");
+					return;
+				}
+				if(password == ""){
+					alert("비밀번호를 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"post",
+					url:"/user/signin",
+					data:{"loginId":loginId, "password":password},
+					success:function(data){
+						
+						if(data.result == "success"){
+							location.href = "/post/timeline/view";
+						}else{
+							alert("아이디/비밀번호를 확인하세요!!");
+						}
+					},
+					error:function(){
+						alert("로그인 에러");
+					}
+				});
+					
 			});
 		});
 	</script>
