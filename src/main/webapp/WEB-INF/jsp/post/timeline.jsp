@@ -18,8 +18,29 @@
 <body>
 	<div id="wrap">
 		
-		<c:import url="/WEB-INF/jsp/include/header.jsp"/>
-		<section></section>
+		<c:import url="/WEB-INF/jsp/include/timelineheader.jsp"/>
+		<section class="d-flex justify-content-center mt-3">
+			<textarea rows="5" class="form-control">내용을 입력해주세요 파일 업로드버튼</textarea>
+			<div>
+				사용자id ...(메뉴기능)
+			</div>
+			<div>
+				하트(이미지) 좋아요: 개
+			</div>
+			<div>
+				사용자 작성글
+			</div>
+			<div>
+				댓글 
+			</div>
+			<div>
+				댓글 리스트
+			</div>
+			<div>
+				댓글 달기
+			</div>
+			
+		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp"/>
 	</div>
 
