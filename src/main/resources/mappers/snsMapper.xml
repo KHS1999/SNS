@@ -50,5 +50,6 @@
   			`loginId` = #{loginId}
   			AND `password` = #{password}
   	</select>
+
   
   </mapper>
