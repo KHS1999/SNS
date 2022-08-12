@@ -36,7 +36,8 @@
 			<!--  /입력상자 -->
 			<!--  피드들 -->
 			<!--  타이틀 -->
-			<div class="border rounded">
+			<c:forEach var="postDetail" items="${postList }">
+			<div class="border rounded mt-3">
 			<div class="d-flex justify-content-between p-2">
 				<div class="d-flex align-items-center ml-2">				
 					<div> userId </div>
@@ -54,7 +55,7 @@
 			<!--  /좋아요 -->
 			<!-- 게시글 -->
 			<div class="p-2">
-				<b>userId</b> 아름다운 꽃!
+				<b>${postDetail.user.loginId }</b> ${postDetail.post.content }
 			</div>
 			<!-- 게시글 -->
 			<!--  댓글 -->
@@ -62,8 +63,8 @@
 				<div class="mb-2 border-bottom small">댓글</div>
 				<!-- 댓글리스트 -->
 				<div class="mt-2">
-					<div><b>userId1</b>너무이쁘다</div>  
-					<div><b>userId2</b>어디서 파나요?</div>
+					<div><b>userId1</b>꽃이 정말 예뻐요!!</div> 
+					<div><b>userId1</b>구매처좀 알려주세요</div>   
 					<div class= "d-flex justify-content-end text-right">  
 						<a href="#" class="text-secondary">더보기</a>
 					</div>
@@ -78,6 +79,7 @@
 				<button class="btn ml-2 bg-success text-white">게시</button>
 			</div>
 			</div>
+			</c:forEach>
 		</div>			
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp"/>
@@ -87,28 +89,29 @@
 			
 			$("#uploadBtn").on("click",function(){
 				
-				let content = $("#contentInput").val();
+				let content = $("#contentInput").val().trim();
 				
 				if(content == ""){
 					alert("내용을 입력해주세요!!");
 					
 					return;
 				}
+				// 사용자가 입력한 content 로 api를 호출해서 데이터를 입력한다.
 				$.ajax({
 					
 					type:"post",
 					url:"/post/create",
 					data:{"content":content},
 					success:function(data){
-						if(data.result=="success"){
-							location.href="";
+						if(data.result == "success"){
+							location.reload();
 						}else{
-							alert();
+							alert("업로드 실패!!");
 							
 						}
 					},
 					error:function(){
-						alert("게시글 작성오류");
+						alert("업로드 에러!");
 					}
 				});
 			});

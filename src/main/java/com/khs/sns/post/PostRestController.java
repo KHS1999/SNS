@@ -25,7 +25,8 @@ public class PostRestController {
 			@RequestParam("content") String content
 
 			,HttpServletRequest request) {
-		
+		// 글쓴 사람 정보를 같이 저장하기 위해서
+		// 로그인된 사용자의 id(user 테이블 pk)를 세션을 통해서 얻어내고 이를 사용한다.
 		HttpSession session = request.getSession();
 		int userId = (Integer)session.getAttribute("userId");
 		int count = postBO.addPost(content,userId);
