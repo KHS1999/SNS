@@ -24,9 +24,15 @@ public class PostBO {
 	private SNSBO snsBO;
 	
 	public int addPost(String content, int userId,MultipartFile file) {
-		// 파일을 저장한다.
-		// 해당 파일을 외부에서 접근할 수 있는 경로를 만들어서 dao로 전달한다.
-		String imagePath = FileManagerService.saveFile(userId, file);		
+		
+		// 파일을 저장하고, 파일 접근 경로를 DAO로 전달.
+		String imagePath = FileManagerService.saveFile(userId, file);	
+		
+		// 파일 저장이 실패한 경우
+		if(imagePath == null) {
+			
+			return -1;
+		}
 		
 		return postDAO.insertPost(content,userId,imagePath);
 	}

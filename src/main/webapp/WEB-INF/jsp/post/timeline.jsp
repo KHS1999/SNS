@@ -30,7 +30,8 @@
 				<textarea rows="10" id="contentInput" class="form-control border-0 rounded">게시글 내용 </textarea>
 			</div>
 			<div class="d-flex justify-content-between mt-3">
-				<input type="file" class="btn">
+				<a href="#" id="imageIcon"><span class="image-fill"><i class="bi bi-image-fill"></i></span></a>
+				<input type="file" class="d-none" id="fileInput">
 				<button id="uploadBtn" class="btn bg-info text-white">업로드</button>
 			</div> 
 			<!--  /입력상자 -->
@@ -40,24 +41,31 @@
 			<div class="border rounded mt-3">
 			<div class="d-flex justify-content-between p-2">
 				<div class="d-flex align-items-center ml-2">				
-					<div> userId </div>
+					<div> ${postDetail.user.loginId } </div>
 				</div>	
 				<div><span class="three-dots"><i class="bi bi-three-dots"></i></span></div>
 			</div>
 			<!--  /타이틀 -->
+			
 			<div>
-				<img class="w-100" src="https://cdn.pixabay.com/photo/2020/11/04/13/29/white-5712344_960_720.jpg">
+				<img class="w-100" src="${postDetail.post.imagePath }">
 			</div>
+			
 			<!--  좋아요 -->
 			<div class="p-2">
-				<img src="/static/img/like.png" height="30px" > 좋아요: n개
+			<a href="#" class="like-btn" data-post-id="${postDetail.post.id }">
+				<i class="bi bi-heart" id="heart" ></i>
+			</a>	
+				<i class="bi bi-heart-fill d-none" id="heart-fill"></i> 좋아요: n개
 			</div>
 			<!--  /좋아요 -->
+			
 			<!-- 게시글 -->
 			<div class="p-2">
 				<b>${postDetail.user.loginId }</b> ${postDetail.post.content }
 			</div>
 			<!-- 게시글 -->
+			
 			<!--  댓글 -->
 			<div class="p-2">
 				<div class="mb-2 border-bottom small">댓글</div>
@@ -87,6 +95,31 @@
 	<script>
 		$(document).ready(function(){
 			
+			$(".like-btn").on("click",function(e){
+				e.preventDefault();
+				
+				// 현재 클릭된 태그 객체를 얻어 와서 postId를 얻어 온다
+				alert();
+			});
+			
+			$("#imageIcon").on("click", function(e){
+				// fileInput을 클릭한 효과를 만들어야 한다.
+				e.preventDefault();
+				$("#fileInput").click();
+			});
+			
+			$("#heart").on("click",function(){
+				
+				$("#heart").addClass("d-none");
+				$("#heart-fill").removeClass("d-none");
+			});
+			
+			$("#heart-fill").on("click",function(){
+				
+				$("#heart-fill").addClass("d-none");
+				$("#heart").removeClass("d-none");
+			});
+			
 			$("#uploadBtn").on("click",function(){
 				
 				let content = $("#contentInput").val().trim();
@@ -96,12 +129,28 @@
 					
 					return;
 				}
+				
+				// 파일 선택 유효성 검사
+				// $("#fileInput")[0].files[0]
+				if($("#fileInput")[0].files.length == 0){
+					alert("이미지를 선택하세요!");
+					return;
+				}
+				
+				var formData = new FormData();
+				formData.append("content", content);
+				formData.append("file", $("#fileInput")[0].files[0]);
+				
+				
 				// 사용자가 입력한 content 로 api를 호출해서 데이터를 입력한다.
 				$.ajax({
 					
 					type:"post",
 					url:"/post/create",
-					data:{"content":content},
+					data:formData,
+					enctype:"multipart/form-data",
+					processData:false,
+					contentType:false,
 					success:function(data){
 						if(data.result == "success"){
 							location.reload();

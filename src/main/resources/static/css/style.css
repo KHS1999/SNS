@@ -12,6 +12,12 @@
 	
 	border: solid 1px #cccccc;
 }
-.three-dots{
+.bi-heart{
 	font-size:30px;
+}
+.bi-heart-fill{
+	font-size:30px;
+}
+.image-fill{
+	font-size:25px;
 }
