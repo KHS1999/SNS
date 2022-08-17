@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
   mvc:
     static-path-pattern: /static/**
     view:
@@ -8,4 +12,4 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/sns_0803
     username: root
-    password: root  
+    password: 1234  

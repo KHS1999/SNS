@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.khs.sns.common.FileManagerService;
 import com.khs.sns.post.dao.PostDAO;
 import com.khs.sns.post.model.Post;
 import com.khs.sns.post.model.PostDetail;
@@ -21,8 +23,12 @@ public class PostBO {
 	@Autowired
 	private SNSBO snsBO;
 	
-	public int addPost(String content, int userId) {
-		return postDAO.insertPost(content,userId, "");
+	public int addPost(String content, int userId,MultipartFile file) {
+		// 파일을 저장한다.
+		// 해당 파일을 외부에서 접근할 수 있는 경로를 만들어서 dao로 전달한다.
+		String imagePath = FileManagerService.saveFile(userId, file);		
+		
+		return postDAO.insertPost(content,userId,imagePath);
 	}
 	
 	public List<PostDetail> getPostList(){
