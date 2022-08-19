@@ -10,7 +10,7 @@
   				`userId`
   				,`postId`
   				,`content`
-  				,createdAt`
+  				,`createdAt`
   				,`updatedAt`
   			)
   			VALUES
@@ -23,5 +23,20 @@
   			)
   	
   	</insert>
+  	<select id="selectCommentListByPostId" parameterType="int" 
+  	resultType="com.khs.sns.post.model.Comment">
+  		SELECT 
+  			`id`
+  			,`userId`
+  			,`postId`
+  			,`content`
+  			,`createdAt`
+  			,`updatedAt`
+  		FROM
+  			`comment`
+  		WHERE 
+  			`postId` = #{postId}		
+  	
+  	</select>
   
   </mapper>

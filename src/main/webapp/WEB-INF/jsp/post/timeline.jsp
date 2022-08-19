@@ -53,10 +53,19 @@
 			
 			<!--  좋아요 -->
 			<div class="p-2">
-			<a href="#" class="like-btn" data-post-id="${postDetail.post.id }">
-				<i class="bi bi-heart" id="heart" ></i>
-			</a>	
-				<i class="bi bi-heart-fill d-none" id="heart-fill"></i> 좋아요: n개
+			<c:choose>
+				<c:when test="${postDetail.like }">
+					<a href="#" class="decoration-none">	
+						<i class="bi bi-heart-fill" id="heart-fill"></i>
+					</a>				
+				</c:when>
+				<c:otherwise>
+					<a href="#" class="like-btn" data-post-id="${postDetail.post.id }">
+						<i class="bi bi-heart" id="heart" ></i>
+					</a>
+				</c:otherwise>
+			</c:choose>
+				 좋아요: ${postDetail.likeCount }개
 			</div>
 			<!--  /좋아요 -->
 			
@@ -71,8 +80,9 @@
 				<div class="mb-2 border-bottom small">댓글</div>
 				<!-- 댓글리스트 -->
 				<div class="mt-2">
-					<div><b>userId1</b>꽃이 정말 예뻐요!!</div> 
-					<div><b>userId1</b>구매처좀 알려주세요</div>   
+					<c:forEach var="commentDetail" items="${postDetail.commentList }">
+						<div><b>${commentDetail.user.loginId }</b>${commentDetail.comment.content }</div> 
+					</c:forEach> 
 					<div class= "d-flex justify-content-end text-right">  
 						<a href="#" class="text-secondary">더보기</a>
 					</div>
@@ -83,8 +93,8 @@
 			<hr>
 			<div class="d-flex justify-content-between">
 				댓글 달기
-				<input type="text" class="form-control border-0 col-8 mb-3">
-				<button class="btn ml-2 bg-success text-white">게시</button>
+				<input type="text" class="form-control border-0 col-8 mb-3" id="commentInput${postDetail.post.id }">
+				<button data-post-id="${postDetail.post.id }" class="btn ml-2 bg-success text-white comment-btn">게시</button>
 			</div>
 			</div>
 			</c:forEach>
@@ -95,11 +105,56 @@
 	<script>
 		$(document).ready(function(){
 			
+			$(".comment-btn").on("click",function(){
+				
+				// 이벤트가 일어난 버튼에서 postId를 얻어 온다.
+				let postId = $(this).data("post-id");
+				// 작성한 댓글 가져오기
+				// #commentInput5
+				let content = $("#commentInput" + postId).val();
+				
+				$.ajax({
+					type:"post",
+					url:"/post/comment/create",
+					data:{"postId":postId, "content":content},
+					success:function(data){
+						if(data.result == "success"){
+							location.reload();
+						}else{
+							alert("댓글 작성 실패");
+						}
+					},
+					error:function(){
+						alert("댓글 작성 에러");
+					}
+					
+				});
+				
+			});
+			
 			$(".like-btn").on("click",function(e){
 				e.preventDefault();
 				
 				// 현재 클릭된 태그 객체를 얻어 와서 postId를 얻어 온다
-				alert();
+				// data-post-id="10"
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get",
+					url:"/post/like",
+					data:{"postId":postId},
+					success:function(data){
+						if(data.result == "success"){
+							location.reload();
+						}else{
+							alert("좋아요 실패");
+							
+						}
+					},
+					error:function(){
+						alert("좋아요 에러!");
+					}
+				});
 			});
 			
 			$("#imageIcon").on("click", function(e){

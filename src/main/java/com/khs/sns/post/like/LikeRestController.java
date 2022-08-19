@@ -38,8 +38,7 @@ public class LikeRestController {
 			map.put("result","fail");
 		}
 		return map;
-		
-		
-		
 	}
+
+		
 }
