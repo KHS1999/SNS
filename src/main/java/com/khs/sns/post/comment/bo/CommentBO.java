@@ -46,4 +46,9 @@ public class CommentBO {
 		
 		return commentDetailList;
 	}
+	
+	// 해당하는 postId 의 모든 댓글 삭제
+	public int deleteComment(int postId) {
+		return commentDAO.deleteComment(postId);
+	}
 }

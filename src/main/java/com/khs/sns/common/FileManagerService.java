@@ -70,4 +70,40 @@ public class FileManagerService {
 			
 			
 		}
+	public static boolean removeFile(String filePath) { // images/3_486551321/asdf.jpg
+		
+		String realFilePath = FILE_UPLOAD_PATH + filePath.replace("/images/","");
+	
+		Path path = Paths.get(realFilePath);
+		
+		// 파일이 있는지
+		if(Files.exists(path)){
+			
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				return false;
+			}
+		}
+//		D:\\김효석\\springproject\\upload/3_486551321/asdf.jpg
+		
+//		D:\\김효석\\springproject\\upload/3_486551321/asdf.jpg	
+		
+		path = path.getParent();
+		
+		// 디렉토리가 존재하는지 확인
+		if(Files.exists(path)) {
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return true;
+}
 }

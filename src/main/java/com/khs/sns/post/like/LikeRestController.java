@@ -40,5 +40,26 @@ public class LikeRestController {
 		return map;
 	}
 
+	// 좋아요 취소 api
+	@GetMapping("/post/unlike")
+	public Map<String, String> unlike(
+			@RequestParam("postId") int postId
+			,HttpServletRequest request){
+		
+		HttpSession session = request.getSession();
+		
+		int userId = (Integer)session.getAttribute("userId");
+		
+		int count = likeBO.unlike(postId, userId);
+		
+		Map<String, String> map = new HashMap<>();
+		
+		if(count == 1) {
+			map.put("result", "success");
+		}else {
+			map.put("result", "fail");
+		}
+		return map;
+	}
 		
 }

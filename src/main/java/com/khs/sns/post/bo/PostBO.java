@@ -78,4 +78,27 @@ public class PostBO {
 		
 		return postDetailList;
 	}
+	
+	public int deletePost(int postId,int userId) {
+		
+		Post post = postDAO.selectPost(postId);
+		int count =  postDAO.deletePost(postId, userId);		
+		// 게시글 삭제
+
+		if(count == 1) {	
+		// 파일 삭제
+		// 파일 경로 알아 오기
+				FileManagerService.removeFile(post.getImagePath());
+		
+	
+		// 댓글 삭제
+		commentBO.deleteComment(postId);
+		// 좋아요 삭제
+		likeBO.deleteLikeByPostId(postId);
+			
+		}
+		
+		return count;
+
+	}
 }
