@@ -114,7 +114,7 @@
 		    <div class="modal-content">
 	
 		      
-		      <div class="modal-body">
+		      <div class="modal-body text-center" >
 		        <a href="#" id="deleteBtn" >삭제하기</a>
 		      </div>
 			</div>
@@ -137,7 +137,7 @@
 				
 			});
 			
-			$(".deleteBtn").on("click",function(){
+			$("#deleteBtn").on("click",function(){
 				
 				// postId
 				let postId = $(this).data("post-id");
